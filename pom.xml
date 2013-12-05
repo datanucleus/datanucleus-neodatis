@@ -27,9 +27,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:svn:svn://andy_jefferson@svn.code.sf.net/p/datanucleus/code/platform/store.neodatis/trunk</connection>
-        <developerConnection>scm:svn:svn+ssh://andy_jefferson@svn.code.sf.net/p/datanucleus/code/platform/store.neodatis/trunk</developerConnection>
-        <url>http://svn.code.sf.net/p/datanucleus/code/platform/store.neodatis/trunk</url>
+        <connection>scm:git:git://github.com/datanucleus/datanucleus-neodatis.git</connection>
+        <url>scm:git:git://github.com/datanucleus/datanucleus-neodatis.git</url>
+        <developerConnection>scm:git:git://github.com/datanucleus/datanucleus-neodatis.git</developerConnection>
     </scm>
 
     <developers>
