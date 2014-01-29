@@ -25,8 +25,8 @@ import java.util.Set;
 
 import org.datanucleus.ClassLoaderResolver;
 import org.datanucleus.ExecutionContext;
-import org.datanucleus.NucleusContext;
-import org.datanucleus.PersistenceConfiguration;
+import org.datanucleus.Configuration;
+import org.datanucleus.PersistenceNucleusContext;
 import org.datanucleus.exceptions.ClassNotResolvedException;
 import org.datanucleus.exceptions.NucleusException;
 import org.datanucleus.flush.FlushOrdered;
@@ -110,11 +110,11 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
      * @param clr the ClassLoaderResolver
      * @param ctx The corresponding context.
      */
-    public NeoDatisStoreManager(ClassLoaderResolver clr, NucleusContext ctx, Map<String, Object> props)
+    public NeoDatisStoreManager(ClassLoaderResolver clr, PersistenceNucleusContext ctx, Map<String, Object> props)
     {
         super("neodatis", clr, ctx, props);
 
-        PersistenceConfiguration conf = ctx.getPersistenceConfiguration();
+        Configuration conf = ctx.getConfiguration();
         if (!conf.getStringProperty("datanucleus.cache.level2.type").equalsIgnoreCase("none"))
         {
             // TODO Remove this when we can handle getting objects from the L2 cache
