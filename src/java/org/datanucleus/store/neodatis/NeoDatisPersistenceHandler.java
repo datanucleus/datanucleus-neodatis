@@ -151,7 +151,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
         if (!storeMgr.managesClass(className))
         {
             // Class is not yet registered here so register it
-            storeMgr.addClass(className, sm.getExecutionContext().getClassLoaderResolver());
+            storeMgr.manageClasses(sm.getExecutionContext().getClassLoaderResolver(), className);
         }
 
         // Get the InsertInfo for this thread so we know if this is the primary object or a reachable
