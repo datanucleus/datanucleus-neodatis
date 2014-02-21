@@ -801,7 +801,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
         }
         catch (ODBRuntimeException re)
         {
-            re.printStackTrace();
+            NucleusLogger.PERSISTENCE.warn("Exception fetching fields for object", re);
         }
 
         // Mark ALL fields as already loaded - NeoDatis doesn't have "unloaded" fields

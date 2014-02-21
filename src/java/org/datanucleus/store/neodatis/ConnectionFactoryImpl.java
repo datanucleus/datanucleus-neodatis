@@ -139,7 +139,7 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
                     // Try as relative to ${user.dir}
                     String absFilename = System.getProperty("user.dir") + System.getProperty("file.separator") + filename;
                     File file = new File(absFilename);
-                    NucleusLogger.DATASTORE.info(LOCALISER_NEODATIS.msg("NeoDatis.FilestoreRelativePath", neodatisStr, absFilename));
+                    NucleusLogger.CONNECTION.info(LOCALISER_NEODATIS.msg("NeoDatis.FilestoreRelativePath", neodatisStr, absFilename));
                     neodatisFilename = file.getAbsolutePath();
                 }
                 catch (Exception e2)
@@ -163,9 +163,9 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
         if (obj != null)
         {
             ODB odb = (ODB)obj;
-            if (NucleusLogger.DATASTORE.isDebugEnabled())
+            if (NucleusLogger.CONNECTION.isDebugEnabled())
             {
-                NucleusLogger.DATASTORE.debug(LOCALISER_NEODATIS.msg("NeoDatis.ClosingConnection", 
+                NucleusLogger.CONNECTION.debug(LOCALISER_NEODATIS.msg("NeoDatis.ClosingConnection", 
                     storeMgr.getConnectionURL(), StringUtils.toJVMIDString(odb)));
             }
             try
@@ -187,7 +187,7 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                NucleusLogger.CONNECTION.warn("Exception closing the NeoDatis server", e);
             }
         }
     }
@@ -230,9 +230,9 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
                         odb = ODBFactory.open(neodatisFilename);
                     }
                 }
-                if (NucleusLogger.DATASTORE.isDebugEnabled())
+                if (NucleusLogger.CONNECTION.isDebugEnabled())
                 {
-                    NucleusLogger.DATASTORE.debug(LOCALISER_NEODATIS.msg("NeoDatis.OpeningConnection", 
+                    NucleusLogger.CONNECTION.debug(LOCALISER_NEODATIS.msg("NeoDatis.OpeningConnection", 
                         storeMgr.getConnectionURL(), StringUtils.toJVMIDString(odb)));
                 }
             }
@@ -250,9 +250,9 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
                 odb = ODBFactory.openClient(neodatisHostname, neodatisPort, neodatisIdentifier,
                     storeMgr.getConnectionUserName(),
                     storeMgr.getConnectionPassword());
-                if (NucleusLogger.DATASTORE.isDebugEnabled())
+                if (NucleusLogger.CONNECTION.isDebugEnabled())
                 {
-                    NucleusLogger.DATASTORE.debug(LOCALISER_NEODATIS.msg("NeoDatis.OpeningConnection",
+                    NucleusLogger.CONNECTION.debug(LOCALISER_NEODATIS.msg("NeoDatis.OpeningConnection",
                         storeMgr.getConnectionURL(), StringUtils.toJVMIDString(odb)));
                 }
             }
@@ -349,9 +349,9 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
             {
                 if (conn != null)
                 {
-                    if (NucleusLogger.DATASTORE.isDebugEnabled())
+                    if (NucleusLogger.CONNECTION.isDebugEnabled())
                     {
-                        NucleusLogger.DATASTORE.debug(LOCALISER_NEODATIS.msg("NeoDatis.CommittingConnection", 
+                        NucleusLogger.CONNECTION.debug(LOCALISER_NEODATIS.msg("NeoDatis.CommittingConnection", 
                             storeMgr.getConnectionURL(), StringUtils.toJVMIDString(conn)));
                     }
 
