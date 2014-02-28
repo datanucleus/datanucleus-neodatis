@@ -40,6 +40,7 @@ import org.datanucleus.store.AbstractStoreManager;
 import org.datanucleus.store.Extent;
 import org.datanucleus.store.ObjectReferencingStoreManager;
 import org.datanucleus.store.StoreData;
+import org.datanucleus.store.StoreManager;
 import org.datanucleus.store.exceptions.NoExtentException;
 import org.datanucleus.util.Localiser;
 import org.datanucleus.util.NucleusLogger;
@@ -388,9 +389,9 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
     public Collection getSupportedOptions()
     {
         Set set = new HashSet();
-        set.add("DatastoreIdentity");
-        set.add("ApplicationIdentity");
-        set.add("TransactionIsolationLevel.read-committed");
+        set.add(StoreManager.OPTION_APPLICATION_ID);
+        set.add(StoreManager.OPTION_DATASTORE_ID);
+        set.add(StoreManager.OPTION_TXN_ISOLATION_READ_COMMITTED);
         return set;
     }
 }
