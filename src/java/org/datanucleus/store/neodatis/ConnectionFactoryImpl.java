@@ -116,7 +116,7 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
                     portName = str.substring(0, str.indexOf("/"));
                     neodatisIdentifier = str.substring(str.indexOf("/") + 1);
                 }
-                neodatisPort = new Integer(portName).intValue();
+                neodatisPort = Integer.valueOf(portName).intValue();
             }
             catch (NumberFormatException nfe)
             {
