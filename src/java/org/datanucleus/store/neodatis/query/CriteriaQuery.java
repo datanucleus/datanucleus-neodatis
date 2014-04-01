@@ -82,15 +82,6 @@ public class CriteriaQuery extends AbstractJavaQuery
     /**
      * Method to compile the query.
      * We have nothing to compile with NeoDatis criteria queries since all is done at execution.
-     * TODO Drop this method for 2.2 onwards
-     */
-    protected void compileInternal(boolean forExecute, Map parameterValues)
-    {
-    }
-
-    /**
-     * Method to compile the query.
-     * We have nothing to compile with NeoDatis criteria queries since all is done at execution.
      */
     protected void compileInternal(Map parameterValues)
     {

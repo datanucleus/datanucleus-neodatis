@@ -57,9 +57,9 @@ import org.neodatis.odb.OID;
  * <li>neodatis:{filename} - uses a local NeoDatis database in the named file</li>
  * <li>neodatis:server:{filename} - uses a local NeoDatis database in the named file as an embedded server</li>
  * <li>neodatis:{hostname}:{port}/{identifier} - uses a remote NeoDatis database with the specified username/password</li>
- * <ul>
+ * </ul>
  * These URLs are specific to DataNucleus support since NeoDatis doesn't use URLs to define the datastore.
- * </p>
+ *
  * <h3>Object Activation and Field Loading</h3>
  * <p>
  * NeoDatis provides methods to hand out memory versions of the datastore objects. Each object has to be
@@ -72,26 +72,26 @@ import org.neodatis.odb.OID;
  * are available). When the user accesses one of these "not-loaded" fields NeoDatisManager.fetchObject is called
  * and that field is marked as loaded (if it is a SCO mutable it is wrapped, and if it is a PC object it
  * has a ObjectProvider connected and is activated).
- * </p>
+ *
  * <h3>Persistence</h3>
  * <p>
  * Each object is persisted on its own, and we dont use NeoDatis's internal cascade mechanism. Instead
  * the NeoDatisManager.insertObject, or NeoDatisManager.updateObject methods are called for each object that
  * is to be persisted/updated. Each call to insertObject/updateObject provides reachability by use
  * of PersistFieldManager.
- * </p>
+ *
  * <h3>Deletion</h3>
  * <p>
  * Currently objects are deleted one by one since NeoDatis doesn't provide its own cascade delete process.
  * We use DeleteFieldManager to navigate through the objec graph according to dependent field metadata.
- * </p>
+ *
  * <h3>Transactions and Connections</h3>
  * <p>
  * Refer to ConnectionFactoryImpl. In simple terms each ExecutionContext has a NeoDatis ODB associated
  * with it, and this is retained until the end of life of the ExecutionContext. With NeoDatis in server mode this
  * allows use of multiple PMs on the same underlying datastore. With NeoDatis in file mode you can only
  * have one PM operating on the same underlying datastore at once. This is a NeoDatis limitation rather than ours.
- * </p>
+ *
  */
 public class NeoDatisStoreManager extends AbstractStoreManager implements ObjectReferencingStoreManager
 {
@@ -110,6 +110,7 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
      * Stores the basic information required for the datastore management.
      * @param clr the ClassLoaderResolver
      * @param ctx The corresponding context.
+     * @param props Properties for the store manager
      */
     public NeoDatisStoreManager(ClassLoaderResolver clr, PersistenceNucleusContext ctx, Map<String, Object> props)
     {

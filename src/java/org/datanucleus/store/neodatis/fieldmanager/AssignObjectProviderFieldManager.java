@@ -46,11 +46,12 @@ public class AssignObjectProviderFieldManager extends AbstractFieldManager
 
     /**
      * Constructor.
-     * @param sm The state manager for the object.
-     **/
-    public AssignObjectProviderFieldManager(ObjectProvider sm, ODB odb)
+     * @param op Object Provider for the object.
+     * @param odb Neodatis ODB
+     */
+    public AssignObjectProviderFieldManager(ObjectProvider op, ODB odb)
     {
-        this.op = sm;
+        this.op = op;
         this.odb = odb;
     }
 
