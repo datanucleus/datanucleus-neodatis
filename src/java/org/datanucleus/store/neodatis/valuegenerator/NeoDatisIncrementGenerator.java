@@ -38,7 +38,7 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
  * Utilises the persistence of objects of NucleusSequence. 
  * Each objects stores the sequence class/field name and the current value of that sequence.
  */
-public class NeoDatisIncrementGenerator extends AbstractDatastoreGenerator
+public class NeoDatisIncrementGenerator extends AbstractDatastoreGenerator<Long>
 {
     /** Localiser for messages. */
     protected static final Localiser LOCALISER_NEODATIS = Localiser.getInstance(
@@ -83,9 +83,9 @@ public class NeoDatisIncrementGenerator extends AbstractDatastoreGenerator
      * @param number The number of additional ids required
      * @return the PoidBlock
      */
-    protected ValueGenerationBlock obtainGenerationBlock(int number)
+    protected ValueGenerationBlock<Long> obtainGenerationBlock(int number)
     {
-        ValueGenerationBlock block = null;
+        ValueGenerationBlock<Long> block = null;
 
         // Try getting the block
         try
@@ -134,9 +134,9 @@ public class NeoDatisIncrementGenerator extends AbstractDatastoreGenerator
      * @param size Block size
      * @return The reserved block
      */
-    protected ValueGenerationBlock reserveBlock(long size)
+    protected ValueGenerationBlock<Long> reserveBlock(long size)
     {
-        List ids = new ArrayList();
+        List<Long> ids = new ArrayList<Long>();
 
         // Find the current NucleusSequence object in NeoDatis for this sequence
         NucleusSequence seq = null;
@@ -192,6 +192,6 @@ public class NeoDatisIncrementGenerator extends AbstractDatastoreGenerator
             throw new NucleusDataStoreException("Exception thrown updating sequence in NeoDatis for name=" + sequenceName, e);
         }
 
-        return new ValueGenerationBlock(ids);
+        return new ValueGenerationBlock<Long>(ids);
     }
 }
