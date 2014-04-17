@@ -71,7 +71,7 @@ public class AssignObjectProviderFieldManager extends AbstractFieldManager
         AbstractClassMetaData acmd = ec.getMetaDataManager().getMetaDataForClass(pc.getClass(), 
             ec.getClassLoaderResolver());
         Object id = NeoDatisUtils.getIdentityForObject(pc, acmd, ec, odb);
-        theSM = ec.newObjectProviderForPersistentClean(id, pc);
+        theSM = ec.getNucleusContext().getObjectProviderFactory().newForPersistentClean(ec, id, pc);
 
         // Recurse to all fields of this object since just assigned its ObjectProvider
         theSM.provideFields(theSM.getClassMetaData().getAllMemberPositions(), 

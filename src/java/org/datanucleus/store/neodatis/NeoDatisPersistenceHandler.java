@@ -874,7 +874,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
             {
                 // Generate a template object copying the PK values from the id
                 Class pcClass = clr.classForName(className, id.getClass().getClassLoader());
-                ObjectProvider sm = ec.newObjectProviderForHollow(pcClass, id);
+                ObjectProvider sm = ec.getNucleusContext().getObjectProviderFactory().newForHollow(ec, pcClass, id);
 
                 // Generate a Criteria query selecting the PK fields
                 Class cls = ec.getClassLoaderResolver().classForName(acmd.getFullClassName());

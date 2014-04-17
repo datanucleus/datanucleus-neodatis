@@ -56,7 +56,7 @@ public class NeoDatisUtils
 
             // Object not managed so give it a ObjectProvider before returning it
             // This marks all fields as loaded (which they are with NeoDatis)
-            sm = ec.newObjectProviderForPersistentClean(id, obj);
+            sm = ec.getNucleusContext().getObjectProviderFactory().newForPersistentClean(ec, id, obj);
 
             // Assign ObjectProviders down the object graph
             sm.provideFields(cmd.getAllMemberPositions(), new AssignObjectProviderFieldManager(sm, odb));
