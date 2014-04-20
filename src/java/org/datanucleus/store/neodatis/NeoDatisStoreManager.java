@@ -281,9 +281,8 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
     // ------------------------------- Utilities -----------------------------------
 
     /**
-     * Check if the strategy is attributed by the database when the PersistenceCapable object is inserted into 
-     * the database. "datastore-identity" cases will be datastore attributed (since we can't store the 
-     * id anywhere).
+     * Check if the strategy is attributed by the database when the persistable object is inserted into 
+     * the database. "datastore-identity" cases will be datastore attributed (since we can't store the id anywhere).
      * @param cmd Metadata for the class
      * @param absFieldNumber FieldNumber of the field (or -1 if datastore id)
      * @return if the object for the strategy is attributed by the database

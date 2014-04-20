@@ -931,7 +931,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
     }
 
     /**
-     * Accessor for an (at least) hollow PersistenceCapable object matching the given id.
+     * Accessor for an (at least) hollow persistable object matching the given id.
      * In this sense, the StoreManager may be seen as a kind of level-3-cache. But this methods servers
      * an important purpose: if the StoreManager is managing the in-memory object instantiation 
      * (as part of co-managing the object lifecycle in general), then the StoreManager has to create the object 

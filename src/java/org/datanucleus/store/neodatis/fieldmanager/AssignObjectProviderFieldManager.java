@@ -34,7 +34,7 @@ import org.neodatis.odb.ODB;
 
 /**
  * Field manager that starts from the source object and for all fields will assign ObjectProviders to all
- * related PersistenceCapable objects found (unless already managed), assuming they are in P_CLEAN state.
+ * related persistable objects found (unless already managed), assuming they are in P_CLEAN state.
  **/
 public class AssignObjectProviderFieldManager extends AbstractFieldManager
 {
