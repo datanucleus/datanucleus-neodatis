@@ -18,6 +18,7 @@ Contributors:
 package org.datanucleus.store.neodatis;
 
 import org.datanucleus.ExecutionContext;
+import org.datanucleus.identity.IdentityUtils;
 import org.datanucleus.identity.OIDFactory;
 import org.datanucleus.metadata.AbstractClassMetaData;
 import org.datanucleus.metadata.IdentityType;
@@ -86,7 +87,7 @@ public class NeoDatisUtils
         }
         else if (acmd.getIdentityType() == IdentityType.APPLICATION)
         {
-            return ec.getApiAdapter().getNewApplicationIdentityObjectId(obj, acmd);
+            return IdentityUtils.getNewApplicationIdentityObjectId(obj, acmd);
         }
         else
         {

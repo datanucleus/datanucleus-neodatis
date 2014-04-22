@@ -30,6 +30,7 @@ import org.datanucleus.PersistenceNucleusContext;
 import org.datanucleus.exceptions.ClassNotResolvedException;
 import org.datanucleus.exceptions.NucleusException;
 import org.datanucleus.flush.FlushOrdered;
+import org.datanucleus.identity.IdentityUtils;
 import org.datanucleus.identity.OIDFactory;
 import org.datanucleus.metadata.AbstractClassMetaData;
 import org.datanucleus.metadata.AbstractMemberMetaData;
@@ -355,7 +356,7 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
             else if (cmd.getIdentityType() == IdentityType.APPLICATION)
             {
                 // If the fields are loaded then the id is known
-                return getApiAdapter().getNewApplicationIdentityObjectId(pc, cmd);
+                return IdentityUtils.getNewApplicationIdentityObjectId(pc, cmd);
             }
         }
         finally
