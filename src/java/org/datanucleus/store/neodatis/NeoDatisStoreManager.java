@@ -30,8 +30,6 @@ import org.datanucleus.PersistenceNucleusContext;
 import org.datanucleus.exceptions.ClassNotResolvedException;
 import org.datanucleus.exceptions.NucleusException;
 import org.datanucleus.flush.FlushOrdered;
-import org.datanucleus.identity.IdentityUtils;
-import org.datanucleus.identity.OIDFactory;
 import org.datanucleus.metadata.AbstractClassMetaData;
 import org.datanucleus.metadata.AbstractMemberMetaData;
 import org.datanucleus.metadata.IdentityStrategy;
@@ -327,8 +325,7 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
      */
     public Object getObjectIdForObject(ExecutionContext ec, Object pc)
     {
-        AbstractClassMetaData cmd = getMetaDataManager().getMetaDataForClass(pc.getClass().getName(), 
-            ec.getClassLoaderResolver());
+        AbstractClassMetaData cmd = getMetaDataManager().getMetaDataForClass(pc.getClass().getName(), ec.getClassLoaderResolver());
         Object id = null;
         ObjectProvider sm = ec.findObjectProvider(pc);
         if (sm != null)
@@ -351,12 +348,12 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
                     // Not stored in the NeoDatis datastore
                     return null;
                 }
-                return OIDFactory.getInstance(getNucleusContext(), datastoreId);
+                return ec.getNucleusContext().getIdentityManager().getDatastoreId(datastoreId);
             }
             else if (cmd.getIdentityType() == IdentityType.APPLICATION)
             {
                 // If the fields are loaded then the id is known
-                return IdentityUtils.getNewApplicationIdentityObjectId(pc, cmd);
+                return ec.getNucleusContext().getIdentityManager().getApplicationId(pc, cmd);
             }
         }
         finally

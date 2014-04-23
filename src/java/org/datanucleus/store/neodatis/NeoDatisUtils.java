@@ -18,8 +18,6 @@ Contributors:
 package org.datanucleus.store.neodatis;
 
 import org.datanucleus.ExecutionContext;
-import org.datanucleus.identity.IdentityUtils;
-import org.datanucleus.identity.OIDFactory;
 import org.datanucleus.metadata.AbstractClassMetaData;
 import org.datanucleus.metadata.IdentityType;
 import org.datanucleus.state.ObjectProvider;
@@ -83,11 +81,11 @@ public class NeoDatisUtils
         if (acmd.getIdentityType() == IdentityType.DATASTORE)
         {
             long datastoreId = odb.getObjectId(obj).getObjectId();
-            return OIDFactory.getInstance(ec.getNucleusContext(), datastoreId);
+            return ec.getNucleusContext().getIdentityManager().getDatastoreId(datastoreId);
         }
         else if (acmd.getIdentityType() == IdentityType.APPLICATION)
         {
-            return IdentityUtils.getNewApplicationIdentityObjectId(obj, acmd);
+            return ec.getNucleusContext().getIdentityManager().getApplicationId(obj, acmd);
         }
         else
         {

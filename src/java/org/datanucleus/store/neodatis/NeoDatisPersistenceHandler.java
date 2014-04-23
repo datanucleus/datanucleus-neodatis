@@ -29,7 +29,6 @@ import org.datanucleus.exceptions.NucleusObjectNotFoundException;
 import org.datanucleus.exceptions.NucleusOptimisticException;
 import org.datanucleus.exceptions.NucleusUserException;
 import org.datanucleus.identity.DatastoreUniqueLongId;
-import org.datanucleus.identity.OIDFactory;
 import org.datanucleus.metadata.AbstractClassMetaData;
 import org.datanucleus.metadata.IdentityType;
 import org.datanucleus.metadata.VersionMetaData;
@@ -256,7 +255,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                 long datastoreId = oid.getObjectId();
                 if (datastoreId > 0)
                 {
-                    objSM.setPostStoreNewObjectId(OIDFactory.getInstance(ec.getNucleusContext(), datastoreId));
+                    objSM.setPostStoreNewObjectId(ec.getNucleusContext().getIdentityManager().getDatastoreId(datastoreId));
                 }
                 else
                 {
