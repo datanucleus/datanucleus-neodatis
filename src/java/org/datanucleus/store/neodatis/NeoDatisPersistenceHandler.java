@@ -28,7 +28,7 @@ import org.datanucleus.exceptions.NucleusDataStoreException;
 import org.datanucleus.exceptions.NucleusObjectNotFoundException;
 import org.datanucleus.exceptions.NucleusOptimisticException;
 import org.datanucleus.exceptions.NucleusUserException;
-import org.datanucleus.identity.DatastoreUniqueOID;
+import org.datanucleus.identity.DatastoreUniqueLongId;
 import org.datanucleus.identity.OIDFactory;
 import org.datanucleus.metadata.AbstractClassMetaData;
 import org.datanucleus.metadata.IdentityType;
@@ -333,7 +333,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                 OID oid = null;
                 if (cmd.getIdentityType() == IdentityType.DATASTORE)
                 {
-                    long idNumber = ((DatastoreUniqueOID)sm.getInternalObjectId()).getKey();
+                    long idNumber = ((DatastoreUniqueLongId)sm.getInternalObjectId()).getKey();
                     oid = new OdbObjectOID(idNumber);
                 }
                 else if (cmd.getIdentityType() == IdentityType.APPLICATION)
@@ -503,7 +503,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                 OID oid = null;
                 if (cmd.getIdentityType() == IdentityType.DATASTORE)
                 {
-                    long idNumber = ((DatastoreUniqueOID)sm.getInternalObjectId()).getKey();
+                    long idNumber = ((DatastoreUniqueLongId)sm.getInternalObjectId()).getKey();
                     oid = new OdbObjectOID(idNumber);
                 }
                 else if (cmd.getIdentityType() == IdentityType.APPLICATION)
@@ -550,7 +550,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
 
                 if (cmd.getIdentityType() == IdentityType.DATASTORE)
                 {
-                    long idNumber = ((DatastoreUniqueOID)sm.getInternalObjectId()).getKey();
+                    long idNumber = ((DatastoreUniqueLongId)sm.getInternalObjectId()).getKey();
                     OID oid = new OdbObjectOID(idNumber);
                     if (neodatisDebug)
                     {
@@ -831,10 +831,10 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
     private Object findObjectForId(ExecutionContext ec, Object id)
     {
         Object pc = null;
-        if (id instanceof DatastoreUniqueOID)
+        if (id instanceof DatastoreUniqueLongId)
         {
             // Datastore identity, so grab from NeoDatis via OID
-            long idNumber = ((DatastoreUniqueOID)id).getKey();
+            long idNumber = ((DatastoreUniqueLongId)id).getKey();
 
             ManagedConnection mconn = storeMgr.getConnection(ec);
             OID oid = new OdbObjectOID(idNumber);
@@ -1053,7 +1053,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
             if (cmd.getIdentityType() == IdentityType.DATASTORE)
             {
                 // Just find if this object is stored
-                long idNumber = ((DatastoreUniqueOID)sm.getInternalObjectId()).getKey();
+                long idNumber = ((DatastoreUniqueLongId)sm.getInternalObjectId()).getKey();
                 OID oid = new OdbObjectOID(idNumber);
                 try
                 {
