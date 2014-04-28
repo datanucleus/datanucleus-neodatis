@@ -158,7 +158,7 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
      * @see org.datanucleus.store.AbstractStoreManager#getStrategyForNative(org.datanucleus.metadata.AbstractClassMetaData, int)
      */
     @Override
-    protected String getStrategyForNative(AbstractClassMetaData cmd, int absFieldNumber)
+    public String getStrategyForNative(AbstractClassMetaData cmd, int absFieldNumber)
     {
         return "increment";
     }
