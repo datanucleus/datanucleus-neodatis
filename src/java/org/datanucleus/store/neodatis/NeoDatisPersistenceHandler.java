@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.datanucleus.ClassLoaderResolver;
 import org.datanucleus.ExecutionContext;
+import org.datanucleus.enhancer.Persistable;
 import org.datanucleus.exceptions.NucleusDataStoreException;
 import org.datanucleus.exceptions.NucleusObjectNotFoundException;
 import org.datanucleus.exceptions.NucleusOptimisticException;
@@ -34,6 +35,7 @@ import org.datanucleus.metadata.IdentityType;
 import org.datanucleus.metadata.VersionMetaData;
 import org.datanucleus.metadata.VersionStrategy;
 import org.datanucleus.state.ObjectProvider;
+import org.datanucleus.state.StateManager;
 import org.datanucleus.store.AbstractPersistenceHandler;
 import org.datanucleus.store.StoreManager;
 import org.datanucleus.store.VersionHelper;
@@ -123,22 +125,22 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
      * The reachability process means that we assign ObjectProviders down the object graph, and that object 
      * states are set up. Only a single NeoDatis "set" command is invoked per user makePersistent() call, 
      * using NeoDatis' ability to persist by reachability.
-     * @param sm The state manager of the object to be inserted.
+     * @param op ObjectProvider of the object to be inserted.
      * @throws NucleusDataStoreException when an error occurs in the datastore communication
      */
-    public void insertObject(ObjectProvider sm)
+    public void insertObject(ObjectProvider op)
     {
         // Check if read-only so update not permitted
-        assertReadOnlyForUpdateOfObject(sm);
+        assertReadOnlyForUpdateOfObject(op);
 
-        if (sm.getClassMetaData().getIdentityType() == IdentityType.APPLICATION)
+        if (op.getClassMetaData().getIdentityType() == IdentityType.APPLICATION)
         {
             // Check existence of the object since NeoDatis doesn't enforce application identity
             try
             {
-                locateObject(sm);
+                locateObject(op);
                 throw new NucleusUserException(LOCALISER_NEODATIS.msg("NeoDatis.Insert.ObjectWithIdAlreadyExists",
-                    sm.getObjectAsPrintable(), sm.getInternalObjectId()));
+                    op.getObjectAsPrintable(), op.getInternalObjectId()));
             }
             catch (NucleusObjectNotFoundException onfe)
             {
@@ -146,11 +148,11 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
             }
         }
 
-        String className = sm.getObject().getClass().getName();
+        String className = op.getObject().getClass().getName();
         if (!storeMgr.managesClass(className))
         {
             // Class is not yet registered here so register it
-            storeMgr.manageClasses(sm.getExecutionContext().getClassLoaderResolver(), className);
+            storeMgr.manageClasses(op.getExecutionContext().getClassLoaderResolver(), className);
         }
 
         // Get the InsertInfo for this thread so we know if this is the primary object or a reachable
@@ -162,16 +164,16 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
             primaryObject = true;
             insertInfo.objectsList = new ArrayList();
         }
-        insertInfo.objectsList.add(sm.getObject());
+        insertInfo.objectsList.add(op.getObject());
 
         // Perform reachability, wrapping all reachable PCs with ObjectProviders (recurses through here)
         // Doesn't replace SCOs with wrappers at this point since we don't want them in NeoDatis
-        sm.provideFields(sm.getClassMetaData().getAllMemberPositions(), new PersistFieldManager(sm, false));
+        op.provideFields(op.getClassMetaData().getAllMemberPositions(), new PersistFieldManager(op, false));
 
         if (primaryObject)
         {
             // Primary object (after reachability processing) so persist all objects
-            ManagedConnection mconn = storeMgr.getConnection(sm.getExecutionContext());
+            ManagedConnection mconn = storeMgr.getConnection(op.getExecutionContext());
             try
             {
                 ODB odb = (ODB)mconn.getConnection();
@@ -182,15 +184,15 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                 {
                     startTime = System.currentTimeMillis();
                     NucleusLogger.DATASTORE_PERSIST.debug(LOCALISER_NEODATIS.msg("NeoDatis.Insert.Start", 
-                        sm.getObjectAsPrintable(), sm.getInternalObjectId()));
+                        op.getObjectAsPrintable(), op.getInternalObjectId()));
                 }
 
                 // Persist all reachable objects
                 if (neodatisDebug)
                 {
-                    System.out.println(">> insertObject odb.store(" + sm.getObjectAsPrintable() + ")");
+                    System.out.println(">> insertObject odb.store(" + op.getObjectAsPrintable() + ")");
                 }
-                odb.store(sm.getObject());
+                odb.store(op.getObject());
 
                 if (NucleusLogger.DATASTORE_PERSIST.isDebugEnabled())
                 {
@@ -203,13 +205,13 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                 while (objsIter.hasNext())
                 {
                     Object pc = objsIter.next();
-                    processInsertedObject(odb, sm.getExecutionContext(), pc);
+                    processInsertedObject(odb, op.getExecutionContext(), pc);
                 }
             }
             catch (ODBRuntimeException re)
             {
                 throw new NucleusDataStoreException("Exception throw inserting " +
-                    sm.getObjectAsPrintable() + " (and reachables) in datastore", re);
+                    op.getObjectAsPrintable() + " (and reachables) in datastore", re);
             }
             finally
             {
@@ -304,25 +306,25 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
      * Updates a persistent object in the database.
      * Provides reachability via PersistFieldManager, meaning that all PC fields that have been updated will be
      * attached/updated too. Each call to "update" here will result in a call to NeoDatis "set".
-     * @param sm The state manager of the object to be updated.
+     * @param op ObjectProvider of the object to be updated.
      * @param fieldNumbers The numbers of the fields to be updated.
      * @throws NucleusDataStoreException when an error occurs in the datastore communication
      * @throws NucleusOptimisticException thrown if version checking fails
      */
-    public void updateObject(ObjectProvider sm, int fieldNumbers[])
+    public void updateObject(ObjectProvider op, int fieldNumbers[])
     {
         // Check if read-only so update not permitted
-        assertReadOnlyForUpdateOfObject(sm);
+        assertReadOnlyForUpdateOfObject(op);
 
         // Perform reachability, wrapping all reachable PCs with ObjectProviders (recurses through this method)
-        sm.provideFields(fieldNumbers, new PersistFieldManager(sm, false));
+        op.provideFields(fieldNumbers, new PersistFieldManager(op, false));
 
         // Unwrap any SCO wrapped fields so we don't persist them
-        sm.replaceAllLoadedSCOFieldsWithValues();
+        op.replaceAllLoadedSCOFieldsWithValues();
 
-        ExecutionContext ec = sm.getExecutionContext();
+        ExecutionContext ec = op.getExecutionContext();
         ManagedConnection mconn = storeMgr.getConnection(ec);
-        AbstractClassMetaData cmd = sm.getClassMetaData();
+        AbstractClassMetaData cmd = op.getClassMetaData();
         try
         {
             ODB odb = (ODB)mconn.getConnection();
@@ -332,12 +334,12 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                 OID oid = null;
                 if (cmd.getIdentityType() == IdentityType.DATASTORE)
                 {
-                    long idNumber = ((DatastoreUniqueLongId)sm.getInternalObjectId()).getKey();
+                    long idNumber = ((DatastoreUniqueLongId)op.getInternalObjectId()).getKey();
                     oid = new OdbObjectOID(idNumber);
                 }
                 else if (cmd.getIdentityType() == IdentityType.APPLICATION)
                 {
-                    oid = odb.getObjectId(sm.getObject());
+                    oid = odb.getObjectId(op.getObject());
                 }
 
                 if (oid != null)
@@ -348,7 +350,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                         long datastoreVersion = odb.ext().getObjectVersion(oid, true);
                         if (datastoreVersion > 0)
                         {
-                            VersionHelper.performVersionCheck(sm, Long.valueOf(datastoreVersion), vermd);
+                            VersionHelper.performVersionCheck(op, Long.valueOf(datastoreVersion), vermd);
                         }
                     }
                     else if (vermd.getVersionStrategy() == VersionStrategy.DATE_TIME)
@@ -356,7 +358,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                         long ts = odb.ext().getObjectUpdateDate(oid, true);
                         if (ts > 0)
                         {
-                            VersionHelper.performVersionCheck(sm, new Timestamp(ts), vermd);
+                            VersionHelper.performVersionCheck(op, new Timestamp(ts), vermd);
                         }
                     }
                 }
@@ -375,25 +377,28 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                     fieldStr.append(cmd.getMetaDataForManagedMemberAtAbsolutePosition(fieldNumbers[i]).getName());
                 }
                 NucleusLogger.DATASTORE_PERSIST.debug(LOCALISER_NEODATIS.msg("NeoDatis.Update.Start", 
-                    sm.getObjectAsPrintable(), sm.getInternalObjectId(), fieldStr.toString()));
+                    op.getObjectAsPrintable(), op.getInternalObjectId(), fieldStr.toString()));
             }
 
-            if (!sm.getAllFieldsLoaded())
+            if (!op.getAllFieldsLoaded())
             {
                 // Some fields not loaded, so maybe attaching. Load our object from the datastore first
-                Object obj = sm.getObject();
-                int[] dirtyFieldNumbers = sm.getDirtyFieldNumbers();
+                Object obj = op.getObject();
+                int[] dirtyFieldNumbers = op.getDirtyFieldNumbers();
                 if (dirtyFieldNumbers != null && dirtyFieldNumbers.length > 0)
                 {
-                    // Some fields need preserving
-                    Object copy = storeMgr.getApiAdapter().getCopyOfPersistableObject(obj, sm, dirtyFieldNumbers);
+                    // Some fields need preserving, so make copy of the object
+                    Persistable pc = (Persistable)obj;
+                    Persistable copy = pc.dnNewInstance((StateManager)op);
+                    copy.dnCopyFields(pc, dirtyFieldNumbers);
+
                     if (NucleusLogger.DATASTORE_PERSIST.isDebugEnabled())
                     {
                         NucleusLogger.DATASTORE_PERSIST.debug(LOCALISER_NEODATIS.msg("NeoDatis.Object.Refreshing", 
                             StringUtils.toJVMIDString(obj)));
                     }
                     // TODO Retrieve the current object
-                    storeMgr.getApiAdapter().copyFieldsFromPersistableObject(copy, dirtyFieldNumbers, obj);
+                    ((Persistable)obj).dnCopyFields(copy, dirtyFieldNumbers);
                 }
                 else
                 {
@@ -412,22 +417,22 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
             {
                 if (neodatisDebug)
                 {
-                    System.out.println(">> updateObject odb.getObjectId(" + sm.getObjectAsPrintable() + ")");
+                    System.out.println(">> updateObject odb.getObjectId(" + op.getObjectAsPrintable() + ")");
                 }
-                odb.getObjectId(sm.getObject());
+                odb.getObjectId(op.getObject());
             }
             catch (ODBRuntimeException re)
             {
                 // This object is not now managed so need to retrieve it
                 throw new NucleusDataStoreException("Object not found when preparing for update " + 
-                    sm.getObjectAsPrintable(), re);
+                    op.getObjectAsPrintable(), re);
             }
 
             if (neodatisDebug)
             {
-                System.out.println(">> updateObject odb.store(" + sm.getObjectAsPrintable() + ")");
+                System.out.println(">> updateObject odb.store(" + op.getObjectAsPrintable() + ")");
             }
-            odb.store(sm.getObject());
+            odb.store(op.getObject());
             if (NucleusLogger.DATASTORE_PERSIST.isDebugEnabled())
             {
                 NucleusLogger.DATASTORE_PERSIST.debug(LOCALISER_NEODATIS.msg("NeoDatis.ExecutionTime", 
@@ -443,13 +448,13 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
             {
                 // Optimistic transaction so update the (transactional) version in the object
                 VersionMetaData vermd = cmd.getVersionMetaDataForClass();
-                OID oid = odb.getObjectId(sm.getObject());
+                OID oid = odb.getObjectId(op.getObject());
                 if (vermd.getVersionStrategy() == VersionStrategy.VERSION_NUMBER)
                 {
                     long datastoreVersion = odb.ext().getObjectVersion(oid, true);
                     if (datastoreVersion > 0)
                     {
-                        sm.setTransactionalVersion(Long.valueOf(datastoreVersion));
+                        op.setTransactionalVersion(Long.valueOf(datastoreVersion));
                     }
                 }
                 else if (vermd.getVersionStrategy() == VersionStrategy.DATE_TIME)
@@ -457,18 +462,18 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                     long ts = odb.ext().getObjectUpdateDate(oid, true);
                     if (ts > 0)
                     {
-                        sm.setTransactionalVersion(new Timestamp(ts));
+                        op.setTransactionalVersion(new Timestamp(ts));
                     }
                 }
             }
 
             // Wrap any unwrapped SCO fields so any subsequent changes are picked up
-            sm.replaceAllLoadedSCOFieldsWithWrappers();
+            op.replaceAllLoadedSCOFieldsWithWrappers();
         }
         catch (ODBRuntimeException re)
         {
             throw new NucleusDataStoreException("Exception thrown updating " +
-                sm.getObjectAsPrintable() + " in datastore", re);
+                op.getObjectAsPrintable() + " in datastore", re);
         }
         finally
         {
