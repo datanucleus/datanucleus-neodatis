@@ -677,7 +677,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                 long startTime = System.currentTimeMillis();
                 if (NucleusLogger.DATASTORE_PERSIST.isDebugEnabled())
                 {
-                    NucleusLogger.DATASTORE_PERSIST.debug(LOCALISER.msg("NeoDatis.Delete.Start", 
+                    NucleusLogger.DATASTORE_PERSIST.debug(Localiser.msg("NeoDatis.Delete.Start", 
                         sm.toPrintableID(), sm.getInternalObjectId()));
                 }
 
@@ -702,7 +702,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
 
                 if (NucleusLogger.DATASTORE_PERSIST.isDebugEnabled())
                 {
-                    NucleusLogger.DATASTORE_PERSIST.debug(LOCALISER.msg("NeoDatis.ExecutionTime", 
+                    NucleusLogger.DATASTORE_PERSIST.debug(Localiser.msg("NeoDatis.ExecutionTime", 
                         (System.currentTimeMillis() - startTime)));
                 }
                 if (storeMgr.getRuntimeManager() != null)
@@ -719,7 +719,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
                         ObjectProvider objSM = sm.getExecutionContext().findObjectProvider(obj);
                         if (objSM != null)
                         {
-                            NucleusLogger.DATASTORE_PERSIST.debug(LOCALISER.msg("NeoDatis.Delete.ObjectDeleted", 
+                            NucleusLogger.DATASTORE_PERSIST.debug(Localiser.msg("NeoDatis.Delete.ObjectDeleted", 
                                 StringUtils.toJVMIDString(obj), objSM.getInternalObjectId()));
                         }
                     }
