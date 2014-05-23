@@ -41,10 +41,6 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
  */
 public class NeoDatisExtent extends AbstractExtent
 {
-    /** Localiser for messages. */
-    protected static final Localiser LOCALISER_NEODATIS = Localiser.getInstance(
-        "org.datanucleus.store.neodatis.Localisation", NeoDatisStoreManager.class.getClassLoader());
-
     private NeoDatisStoreManager storeMgr;
 
     /** Set of iterators created by this Extent. */
@@ -101,8 +97,7 @@ public class NeoDatisExtent extends AbstractExtent
             long startTime = System.currentTimeMillis();
             if (NucleusLogger.DATASTORE_RETRIEVE.isDebugEnabled())
             {
-                NucleusLogger.DATASTORE_RETRIEVE.debug(
-                    LOCALISER_NEODATIS.msg("NeoDatis.Extent.Execute", candidateClass, "" + subclasses));
+                NucleusLogger.DATASTORE_RETRIEVE.debug(Localiser.msg("NeoDatis.Extent.Execute", candidateClass, "" + subclasses));
             }
             Objects results = null;
             IQuery query = new CriteriaQuery(candidateClass);
@@ -118,8 +113,7 @@ public class NeoDatisExtent extends AbstractExtent
 
             if (NucleusLogger.DATASTORE_RETRIEVE.isDebugEnabled())
             {
-                NucleusLogger.DATASTORE_RETRIEVE.debug(
-                    LOCALISER_NEODATIS.msg("NeoDatis.ExecutionTime", (System.currentTimeMillis() - startTime)));
+                NucleusLogger.DATASTORE_RETRIEVE.debug(Localiser.msg("NeoDatis.ExecutionTime", (System.currentTimeMillis() - startTime)));
             }
     
             NeoDatisExtentIterator iter = new NeoDatisExtentIterator(results);
@@ -196,7 +190,7 @@ public class NeoDatisExtent extends AbstractExtent
          */
         public void remove()
         {
-            throw new UnsupportedOperationException(LOCALISER_NEODATIS.msg("NeoDatis.Extent.IteratorRemoveNotSupported"));
+            throw new UnsupportedOperationException(Localiser.msg("NeoDatis.Extent.IteratorRemoveNotSupported"));
         }
     }
 }

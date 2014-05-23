@@ -27,7 +27,6 @@ import org.datanucleus.exceptions.NucleusUserException;
 import org.datanucleus.metadata.AbstractClassMetaData;
 import org.datanucleus.store.StoreManager;
 import org.datanucleus.store.connection.ManagedConnection;
-import org.datanucleus.store.neodatis.NeoDatisStoreManager;
 import org.datanucleus.store.neodatis.NeoDatisUtils;
 import org.datanucleus.store.query.AbstractJavaQuery;
 import org.datanucleus.util.Localiser;
@@ -41,10 +40,6 @@ import org.neodatis.odb.Objects;
  */
 public class NativeQuery extends AbstractJavaQuery
 {
-    /** Localiser for messages. */
-    protected static final Localiser LOCALISER_NEODATIS = Localiser.getInstance(
-        "org.datanucleus.store.neodatis.Localisation", NeoDatisStoreManager.class.getClassLoader());
-
     /** The NeoDatis native query. */
     org.neodatis.odb.core.query.nq.NativeQuery query = null;
 
@@ -72,7 +67,7 @@ public class NativeQuery extends AbstractJavaQuery
 
         if (!(nativeQuery instanceof org.neodatis.odb.core.query.nq.NativeQuery))
         {
-            throw new NucleusUserException(LOCALISER_NEODATIS.msg("NeoDatis.Native.NeedsQuery"));
+            throw new NucleusUserException(Localiser.msg("NeoDatis.Native.NeedsQuery"));
         }
 
         this.query = (org.neodatis.odb.core.query.nq.NativeQuery)nativeQuery;
@@ -111,7 +106,7 @@ public class NativeQuery extends AbstractJavaQuery
             long startTime = System.currentTimeMillis();
             if (NucleusLogger.QUERY.isDebugEnabled())
             {
-                NucleusLogger.QUERY.debug(LOCALISER.msg("021046", "Native", getSingleStringQuery()));
+                NucleusLogger.QUERY.debug(Localiser.msg("021046", "Native", getSingleStringQuery()));
             }
 
             // Try to find any comparator info
@@ -127,7 +122,7 @@ public class NativeQuery extends AbstractJavaQuery
 
             if (NucleusLogger.QUERY.isDebugEnabled())
             {
-                NucleusLogger.QUERY.debug(LOCALISER.msg("021074", 
+                NucleusLogger.QUERY.debug(Localiser.msg("021074", 
                     "Native", "" + (System.currentTimeMillis() - startTime)));
             }
 

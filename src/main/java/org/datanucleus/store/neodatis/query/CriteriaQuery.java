@@ -27,7 +27,6 @@ import org.datanucleus.exceptions.NucleusUserException;
 import org.datanucleus.metadata.AbstractClassMetaData;
 import org.datanucleus.store.StoreManager;
 import org.datanucleus.store.connection.ManagedConnection;
-import org.datanucleus.store.neodatis.NeoDatisStoreManager;
 import org.datanucleus.store.neodatis.NeoDatisUtils;
 import org.datanucleus.store.query.AbstractJavaQuery;
 import org.datanucleus.util.Localiser;
@@ -41,10 +40,6 @@ import org.neodatis.odb.Objects;
  */
 public class CriteriaQuery extends AbstractJavaQuery
 {
-    /** Localiser for messages. */
-    protected static final Localiser LOCALISER_NEODATIS = Localiser.getInstance(
-        "org.datanucleus.store.neodatis.Localisation", NeoDatisStoreManager.class.getClassLoader());
-
     /** The NeoDatis criteria query. */
     org.neodatis.odb.impl.core.query.criteria.CriteriaQuery query = null;
 
@@ -72,7 +67,7 @@ public class CriteriaQuery extends AbstractJavaQuery
 
         if (!(criteriaQuery instanceof org.neodatis.odb.impl.core.query.criteria.CriteriaQuery))
         {
-            throw new NucleusUserException(LOCALISER_NEODATIS.msg("NeoDatis.Criteria.NeedsQuery"));
+            throw new NucleusUserException(Localiser.msg("NeoDatis.Criteria.NeedsQuery"));
         }
 
         this.query = (org.neodatis.odb.impl.core.query.criteria.CriteriaQuery)criteriaQuery;
@@ -111,7 +106,7 @@ public class CriteriaQuery extends AbstractJavaQuery
             long startTime = System.currentTimeMillis();
             if (NucleusLogger.QUERY.isDebugEnabled())
             {
-                NucleusLogger.QUERY.debug(LOCALISER.msg("021046", "Criteria", getSingleStringQuery()));
+                NucleusLogger.QUERY.debug(Localiser.msg("021046", "Criteria", getSingleStringQuery()));
             }
 
             // Try to find any comparator info
@@ -127,7 +122,7 @@ public class CriteriaQuery extends AbstractJavaQuery
 
             if (NucleusLogger.QUERY.isDebugEnabled())
             {
-                NucleusLogger.QUERY.debug(LOCALISER.msg("021074", 
+                NucleusLogger.QUERY.debug(Localiser.msg("021074", 
                     "Criteria", "" + (System.currentTimeMillis() - startTime)));
             }
 

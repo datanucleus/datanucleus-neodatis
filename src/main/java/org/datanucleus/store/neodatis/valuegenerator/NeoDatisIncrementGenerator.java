@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.datanucleus.exceptions.NucleusDataStoreException;
-import org.datanucleus.store.neodatis.NeoDatisStoreManager;
 import org.datanucleus.store.valuegenerator.AbstractDatastoreGenerator;
 import org.datanucleus.store.valuegenerator.ValueGenerationBlock;
 import org.datanucleus.store.valuegenerator.ValueGenerationException;
@@ -40,10 +39,6 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
  */
 public class NeoDatisIncrementGenerator extends AbstractDatastoreGenerator<Long>
 {
-    /** Localiser for messages. */
-    protected static final Localiser LOCALISER_NEODATIS = Localiser.getInstance(
-        "org.datanucleus.store.neodatis.Localisation", NeoDatisStoreManager.class.getClassLoader());
-
     /** The NeoDatis ODB to use for generating values */
     private ODB odb = null;
 
@@ -105,7 +100,7 @@ public class NeoDatisIncrementGenerator extends AbstractDatastoreGenerator<Long>
             }
             catch (ValueGenerationException poidex)
             {
-                NucleusLogger.VALUEGENERATION.info(LOCALISER.msg("040003", poidex.getMessage()));
+                NucleusLogger.VALUEGENERATION.info(Localiser.msg("040003", poidex.getMessage()));
                 throw poidex;
             }
             catch (RuntimeException ex)
@@ -113,7 +108,7 @@ public class NeoDatisIncrementGenerator extends AbstractDatastoreGenerator<Long>
                 // exceptions cached by the poid should be enclosed in PoidException
                 // when the exceptions are not catched exception by poid, we give a new try
                 // in creating the repository
-                NucleusLogger.VALUEGENERATION.info(LOCALISER.msg("040003", ex.getMessage()));
+                NucleusLogger.VALUEGENERATION.info(Localiser.msg("040003", ex.getMessage()));
                 throw ex;
             }
         }
@@ -172,8 +167,7 @@ public class NeoDatisIncrementGenerator extends AbstractDatastoreGenerator<Long>
         seq.incrementCurrentValue(allocationSize);
         if (NucleusLogger.DATASTORE.isDebugEnabled())
         {
-            NucleusLogger.DATASTORE.debug(LOCALISER_NEODATIS.msg("Neodatis.ValueGenerator.UpdatingSequence", 
-                sequenceName, "" + seq.getCurrentValue()));
+            NucleusLogger.DATASTORE.debug(Localiser.msg("Neodatis.ValueGenerator.UpdatingSequence", sequenceName, "" + seq.getCurrentValue()));
         }
 
         for (int i=0; i<size; i++)

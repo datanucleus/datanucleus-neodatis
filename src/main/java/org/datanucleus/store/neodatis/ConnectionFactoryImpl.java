@@ -61,10 +61,6 @@ import org.neodatis.odb.ODBServer;
  */
 public class ConnectionFactoryImpl extends AbstractConnectionFactory
 {
-    /** Localiser for messages. */
-    protected static final Localiser LOCALISER_NEODATIS = Localiser.getInstance(
-        "org.datanucleus.store.neodatis.Localisation", NeoDatisStoreManager.class.getClassLoader());
-
     /** Use embedded server mode. */
     private boolean neodatisUseEmbeddedServer = false;
 
@@ -98,7 +94,7 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
         String url = storeMgr.getConnectionURL();
         if (!url.startsWith("neodatis"))
         {
-            throw new NucleusException(LOCALISER_NEODATIS.msg("NeoDatis.URLInvalid", url));
+            throw new NucleusException(Localiser.msg("NeoDatis.URLInvalid", url));
         }
 
         // Split the URL into filename, or "host:port"
@@ -120,7 +116,7 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
             }
             catch (NumberFormatException nfe)
             {
-                throw new NucleusUserException(LOCALISER_NEODATIS.msg("NeoDatis.URLInvalid", url));
+                throw new NucleusUserException(Localiser.msg("NeoDatis.URLInvalid", url));
             }
         }
         else
@@ -139,12 +135,12 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
                     // Try as relative to ${user.dir}
                     String absFilename = System.getProperty("user.dir") + System.getProperty("file.separator") + filename;
                     File file = new File(absFilename);
-                    NucleusLogger.CONNECTION.info(LOCALISER_NEODATIS.msg("NeoDatis.FilestoreRelativePath", neodatisStr, absFilename));
+                    NucleusLogger.CONNECTION.info(Localiser.msg("NeoDatis.FilestoreRelativePath", neodatisStr, absFilename));
                     neodatisFilename = file.getAbsolutePath();
                 }
                 catch (Exception e2)
                 {
-                    throw new NucleusUserException(LOCALISER_NEODATIS.msg("NeoDatis.FilenameError", 
+                    throw new NucleusUserException(Localiser.msg("NeoDatis.FilenameError", 
                         neodatisFilename, e.getMessage()), e);
                 }
             }
@@ -165,7 +161,7 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
             ODB odb = (ODB)obj;
             if (NucleusLogger.CONNECTION.isDebugEnabled())
             {
-                NucleusLogger.CONNECTION.debug(LOCALISER_NEODATIS.msg("NeoDatis.ClosingConnection", 
+                NucleusLogger.CONNECTION.debug(Localiser.msg("NeoDatis.ClosingConnection", 
                     storeMgr.getConnectionURL(), StringUtils.toJVMIDString(odb)));
             }
             try
@@ -232,13 +228,13 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
                 }
                 if (NucleusLogger.CONNECTION.isDebugEnabled())
                 {
-                    NucleusLogger.CONNECTION.debug(LOCALISER_NEODATIS.msg("NeoDatis.OpeningConnection", 
+                    NucleusLogger.CONNECTION.debug(Localiser.msg("NeoDatis.OpeningConnection", 
                         storeMgr.getConnectionURL(), StringUtils.toJVMIDString(odb)));
                 }
             }
             catch (Exception e)
             {
-                throw new NucleusDataStoreException(LOCALISER_NEODATIS.msg("NeoDatis.ConnectionError", 
+                throw new NucleusDataStoreException(Localiser.msg("NeoDatis.ConnectionError", 
                     storeMgr.getConnectionURL()), e);
             }
         }
@@ -252,13 +248,13 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
                     storeMgr.getConnectionPassword());
                 if (NucleusLogger.CONNECTION.isDebugEnabled())
                 {
-                    NucleusLogger.CONNECTION.debug(LOCALISER_NEODATIS.msg("NeoDatis.OpeningConnection",
+                    NucleusLogger.CONNECTION.debug(Localiser.msg("NeoDatis.OpeningConnection",
                         storeMgr.getConnectionURL(), StringUtils.toJVMIDString(odb)));
                 }
             }
             catch (Exception e)
             {
-                throw new NucleusDataStoreException(LOCALISER_NEODATIS.msg("NeoDatis.ConnectionError", 
+                throw new NucleusDataStoreException(Localiser.msg("NeoDatis.ConnectionError", 
                     storeMgr.getConnectionURL()), e);
             }
         }
@@ -351,7 +347,7 @@ public class ConnectionFactoryImpl extends AbstractConnectionFactory
                 {
                     if (NucleusLogger.CONNECTION.isDebugEnabled())
                     {
-                        NucleusLogger.CONNECTION.debug(LOCALISER_NEODATIS.msg("NeoDatis.CommittingConnection", 
+                        NucleusLogger.CONNECTION.debug(Localiser.msg("NeoDatis.CommittingConnection", 
                             storeMgr.getConnectionURL(), StringUtils.toJVMIDString(conn)));
                     }
 

@@ -33,7 +33,6 @@ import org.datanucleus.query.expression.ParameterExpression;
 import org.datanucleus.query.expression.PrimaryExpression;
 import org.datanucleus.query.expression.Expression.Operator;
 import org.datanucleus.query.symbol.SymbolTable;
-import org.datanucleus.store.neodatis.NeoDatisStoreManager;
 import org.datanucleus.util.Localiser;
 import org.datanucleus.util.NucleusLogger;
 import org.neodatis.odb.core.query.criteria.ICriterion;
@@ -46,10 +45,6 @@ import org.neodatis.odb.core.query.criteria.Where;
  */
 public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
 {
-    /** Localiser for messages. */
-    protected static final Localiser LOCALISER_NEODATIS = Localiser.getInstance(
-        "org.datanucleus.store.neodatis.Localisation", NeoDatisStoreManager.class.getClassLoader());
-
     String candidateAlias;
 
     /** Filter expression. */
@@ -100,7 +95,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                     query.setCriterion((ICriterion)where);
                     if (NucleusLogger.QUERY.isDebugEnabled())
                     {
-                        NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria",
+                        NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria",
                             "query.setCriterion(where);"));
                     }
                 }
@@ -141,7 +136,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                 query.orderByAsc(orderFieldsAsc.toString());
                 if (NucleusLogger.QUERY.isDebugEnabled())
                 {
-                    NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria",
+                    NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria",
                         "query.orderByAsc(" + orderFieldsAsc.toString() + ");"));
                 }
             }
@@ -150,7 +145,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                 query.orderByDesc(orderFieldsDesc.toString());
                 if (NucleusLogger.QUERY.isDebugEnabled())
                 {
-                    NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria",
+                    NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria",
                         "query.orderByDesc(" + orderFieldsDesc.toString() + ");"));
                 }
             }
@@ -190,7 +185,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
         {
             if (NucleusLogger.QUERY.isDebugEnabled())
             {
-                NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                     "Where.or().add(" + left + ").add(" + right + ")"));
             }
             boolExpr = Where.or().add((ICriterion)left).add((ICriterion)right);
@@ -227,7 +222,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
         {
             if (NucleusLogger.QUERY.isDebugEnabled())
             {
-                NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                     "Where.and().add(" + left + ").add(" + right + ")"));
             }
             boolExpr = Where.and().add((ICriterion)left).add((ICriterion)right);
@@ -636,7 +631,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                 }
                 if (NucleusLogger.QUERY.isDebugEnabled())
                 {
-                    NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                    NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                         "Where.like(" + field + ", '" + arg + "%')"));
                 }
                 Object boolExpr = Where.like(field, arg + "%");
@@ -662,7 +657,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                 }
                 if (NucleusLogger.QUERY.isDebugEnabled())
                 {
-                    NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                    NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                         "Where.like(" + field + ", '%" + arg + "')"));
                 }
                 Object boolExpr = Where.like(field, "%" + arg);
@@ -1009,32 +1004,32 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
         {
             if (op == Expression.OP_GT)
             {
-                NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                     "Where.gt(" + fieldPath + ", " + literalValue + ")"));
             }
             else if (op == Expression.OP_LT)
             {
-                NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                     "Where.lt(" + fieldPath + ", " + literalValue + ")"));
             }
             else if (op == Expression.OP_GTEQ)
             {
-                NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                     "Where.ge(" + fieldPath + ", " + literalValue + ")"));
             }
             else if (op == Expression.OP_LTEQ)
             {
-                NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                     "Where.le(" + fieldPath + ", " + literalValue + ")"));
             }
             else if (op == Expression.OP_EQ)
             {
-                NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                     "Where.equal(" + fieldPath + ", " + literalValue + ")"));
             }
             else if (op == Expression.OP_NOTEQ)
             {
-                NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                     "Where.not(Where.equal(" + fieldPath + ", " + literalValue + "))"));
             }
         }
@@ -1102,32 +1097,32 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                 {
                     if (op == Expression.OP_GT)
                     {
-                        NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                        NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                             "Where.sizeGt(" + field + ", " + literalValue + ")"));
                     }
                     else if (op == Expression.OP_LT)
                     {
-                        NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                        NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                             "Where.sizeLt(" + field + ", " + literalValue + ")"));
                     }
                     else if (op == Expression.OP_GTEQ)
                     {
-                        NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                        NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                             "Where.sizeGe(" + field + ", " + literalValue + ")"));
                     }
                     else if (op == Expression.OP_LTEQ)
                     {
-                        NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                        NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                             "Where.sizeLe(" + field + ", " + literalValue + ")"));
                     }
                     else if (op == Expression.OP_EQ)
                     {
-                        NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria",
+                        NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria",
                             "Where.sizeEq(" + field + ", " + literalValue + ")"));
                     }
                     else if (op == Expression.OP_NOTEQ)
                     {
-                        NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria", 
+                        NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", 
                             "Where.sizeNe(" + field + ", " + literalValue + ")"));
                     }
                 }

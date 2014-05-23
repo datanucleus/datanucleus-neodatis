@@ -94,9 +94,10 @@ import org.neodatis.odb.OID;
  */
 public class NeoDatisStoreManager extends AbstractStoreManager implements ObjectReferencingStoreManager
 {
-    /** Localiser for messages. */
-    protected static final Localiser LOCALISER_NEODATIS = Localiser.getInstance(
-        "org.datanucleus.store.neodatis.Localisation", NeoDatisStoreManager.class.getClassLoader());
+    static
+    {
+        Localiser.registerBundle("org.datanucleus.store.neodatis.Localisation", NeoDatisStoreManager.class.getClassLoader());
+    }
 
     /** 
      * Collection of the currently active ODBs.

@@ -33,7 +33,6 @@ import org.datanucleus.query.evaluator.JPQLEvaluator;
 import org.datanucleus.query.evaluator.JavaQueryEvaluator;
 import org.datanucleus.store.StoreManager;
 import org.datanucleus.store.connection.ManagedConnection;
-import org.datanucleus.store.neodatis.NeoDatisStoreManager;
 import org.datanucleus.store.neodatis.NeoDatisUtils;
 import org.datanucleus.store.query.AbstractJPQLQuery;
 import org.datanucleus.util.Localiser;
@@ -47,10 +46,6 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
  */
 public class JPQLQuery extends AbstractJPQLQuery
 {
-    /** Localiser for messages. */
-    protected static final Localiser LOCALISER_NEODATIS = Localiser.getInstance(
-        "org.datanucleus.store.neodatis.Localisation", NeoDatisStoreManager.class.getClassLoader());
-
     /**
      * Constructs a new query instance that uses the given persistence manager.
      * @param storeMgr StoreManager for this query
@@ -102,7 +97,7 @@ public class JPQLQuery extends AbstractJPQLQuery
             long startTime = System.currentTimeMillis();
             if (NucleusLogger.QUERY.isDebugEnabled())
             {
-                NucleusLogger.QUERY.debug(LOCALISER.msg("021046", "JPQL", getSingleStringQuery(), null));
+                NucleusLogger.QUERY.debug(Localiser.msg("021046", "JPQL", getSingleStringQuery(), null));
             }
             List candidates = null;
             boolean filterInMemory = false;
@@ -132,7 +127,7 @@ public class JPQLQuery extends AbstractJPQLQuery
 
             if (NucleusLogger.QUERY.isDebugEnabled())
             {
-                NucleusLogger.QUERY.debug(LOCALISER.msg("021074", "JPQL", "" + (System.currentTimeMillis() - startTime)));
+                NucleusLogger.QUERY.debug(Localiser.msg("021074", "JPQL", "" + (System.currentTimeMillis() - startTime)));
             }
 
             Iterator iter = results.iterator();
@@ -182,7 +177,7 @@ public class JPQLQuery extends AbstractJPQLQuery
         CriteriaQuery query = new CriteriaQuery(candidateClass);
         if (NucleusLogger.QUERY.isDebugEnabled())
         {
-            NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria",
+            NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria",
                 "CriteriaQuery query = new CriteriaQuery(" + candidateClass.getName() + ")"));
         }
         if (subclasses)
@@ -190,7 +185,7 @@ public class JPQLQuery extends AbstractJPQLQuery
             query.setPolymorphic(true);
             if (NucleusLogger.QUERY.isDebugEnabled())
             {
-                NucleusLogger.QUERY.debug(LOCALISER_NEODATIS.msg("NeoDatis.Criteria",
+                NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria",
                     "query.setPolymorphic(true)"));
             }
         }
