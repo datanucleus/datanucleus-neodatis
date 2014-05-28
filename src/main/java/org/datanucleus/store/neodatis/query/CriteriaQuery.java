@@ -74,10 +74,10 @@ public class CriteriaQuery extends AbstractJavaQuery
         this.candidateClassName = query.getFullClassName();
     }
 
-    /**
-     * Method to compile the query.
-     * We have nothing to compile with NeoDatis criteria queries since all is done at execution.
-     */
+    public void compileGeneric(Map parameterValues)
+    {
+    }
+
     protected void compileInternal(Map parameterValues)
     {
     }

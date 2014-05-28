@@ -74,6 +74,10 @@ public class NativeQuery extends AbstractJavaQuery
         this.candidateClassName = query.getObjectType().getName();
     }
 
+    public void compileGeneric(Map parameterValues)
+    {
+    }
+
     /**
      * Method to compile the query.
      * We have nothing to compile with NeoDatis native queries since all is done at execution.
