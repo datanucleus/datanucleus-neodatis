@@ -17,9 +17,10 @@ Contributors:
  **********************************************************************/
 package org.datanucleus.store.neodatis.query;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.Map;
-import java.util.Stack;
 
 import org.datanucleus.exceptions.NucleusException;
 import org.datanucleus.query.QueryUtils;
@@ -62,7 +63,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
     /** Criteria Query that we are updating. */
     org.neodatis.odb.impl.core.query.criteria.CriteriaQuery query;
 
-    Stack stack = new Stack();
+    Deque stack = new ArrayDeque();
 
     /**
      * Constructor.
@@ -87,7 +88,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
         {
             // Define the filter on the Criteria query
             filterExpr.evaluate(this);
-            if (!stack.empty())
+            if (!stack.isEmpty())
             {
                 Object where = stack.pop();
                 if (where instanceof ICriterion)
