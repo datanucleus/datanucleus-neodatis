@@ -363,7 +363,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
             long startTime = System.currentTimeMillis();
             if (NucleusLogger.DATASTORE_PERSIST.isDebugEnabled())
             {
-                StringBuffer fieldStr = new StringBuffer();
+                StringBuilder fieldStr = new StringBuilder();
                 for (int i=0;i<fieldNumbers.length;i++)
                 {
                     if (i > 0)
@@ -758,7 +758,7 @@ public class NeoDatisPersistenceHandler extends AbstractPersistenceHandler
         if (NucleusLogger.PERSISTENCE.isDebugEnabled())
         {
             // Debug information about what we are retrieving
-            StringBuffer str = new StringBuffer("Fetching object \"");
+            StringBuilder str = new StringBuilder("Fetching object \"");
             str.append(sm.getObjectAsPrintable()).append("\" (id=");
             str.append(sm.getInternalObjectId()).append(")").append(" fields [");
             for (int i=0;i<fieldNumbers.length;i++)

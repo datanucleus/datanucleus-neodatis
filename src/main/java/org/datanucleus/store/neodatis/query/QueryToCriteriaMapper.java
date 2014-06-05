@@ -96,8 +96,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                     query.setCriterion((ICriterion)where);
                     if (NucleusLogger.QUERY.isDebugEnabled())
                     {
-                        NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria",
-                            "query.setCriterion(where);"));
+                        NucleusLogger.QUERY.debug(Localiser.msg("NeoDatis.Criteria", "query.setCriterion(where);"));
                     }
                 }
             }
@@ -107,8 +106,8 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
         if (orderingExpr != null)
         {
             // Define the ordering on the Criteria query
-            StringBuffer orderFieldsAsc = new StringBuffer();
-            StringBuffer orderFieldsDesc = new StringBuffer();
+            StringBuilder orderFieldsAsc = new StringBuilder();
+            StringBuilder orderFieldsDesc = new StringBuilder();
             for (int i = 0; i < orderingExpr.length; i++)
             {
                 String orderFieldName = ((PrimaryExpression)orderingExpr[i].getLeft()).getId();
