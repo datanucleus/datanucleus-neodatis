@@ -40,6 +40,7 @@ import org.neodatis.odb.Objects;
  */
 public class CriteriaQuery extends AbstractJavaQuery
 {
+    private static final long serialVersionUID = 185104691434618259L;
     /** The NeoDatis criteria query. */
     org.neodatis.odb.impl.core.query.criteria.CriteriaQuery query = null;
 

@@ -45,6 +45,8 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
  */
 public class JDOQLQuery extends AbstractJDOQLQuery
 {
+    private static final long serialVersionUID = -8193715845075045274L;
+
     /**
      * Constructs a new query instance that uses the given persistence manager.
      * @param storeMgr StoreManager for this query

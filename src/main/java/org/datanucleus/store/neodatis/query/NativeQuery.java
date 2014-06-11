@@ -40,6 +40,7 @@ import org.neodatis.odb.Objects;
  */
 public class NativeQuery extends AbstractJavaQuery
 {
+    private static final long serialVersionUID = -2450722648421385796L;
     /** The NeoDatis native query. */
     org.neodatis.odb.core.query.nq.NativeQuery query = null;
 
