@@ -197,11 +197,9 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                 stack.push(Boolean.TRUE);
                 return Boolean.TRUE;
             }
-            else
-            {
-                stack.push(Boolean.FALSE);
-                return Boolean.FALSE;
-            }
+
+            stack.push(Boolean.FALSE);
+            return Boolean.FALSE;
         }
         stack.push(boolExpr);
         return stack.peek();
@@ -234,11 +232,9 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                 stack.push(Boolean.TRUE);
                 return Boolean.TRUE;
             }
-            else
-            {
-                stack.push(Boolean.FALSE);
-                return Boolean.FALSE;
-            }
+
+            stack.push(Boolean.FALSE);
+            return Boolean.FALSE;
         }
         stack.push(boolExpr);
         return stack.peek();
@@ -578,13 +574,10 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
             stack.push(value);
             return value;
         }
-        else
-        {
-            // Just push the PrimaryExpression on to the stack and handle it elsewhere since we
-            // likely need the whole list of tuples to specify the Where
-            stack.push(expr);
-            return expr;
-        }
+
+        // Just push the PrimaryExpression on to the stack and handle it elsewhere since we likely need the whole list of tuples to specify the Where
+        stack.push(expr);
+        return expr;
     }
 
     /**
@@ -683,11 +676,9 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                     stack.push(boolExpr);
                     return boolExpr;
                 }
-                else
-                {
-                    throw new NucleusException("Method " + method + 
-                    " is only currently supported with a literal argument for JDOQL with NeoDatis");
-                }
+
+                throw new NucleusException("Method " + method + 
+                        " is only currently supported with a literal argument for JDOQL with NeoDatis");
             }
             else if (method.equals("isEmpty"))
             {
@@ -704,11 +695,8 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
                 " is not currently supported with JDOQL for NeoDatis");
             }
         }
-        else
-        {
-            throw new NucleusException("Attempt to invoke " + method + " on " + invokedExpr +
-                " but this is not currently supported by NeoDatis JDOQL");
-        }
+
+        throw new NucleusException("Attempt to invoke " + method + " on " + invokedExpr + " but this is not currently supported by NeoDatis JDOQL");
     }
 
     /**
@@ -734,7 +722,7 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
     {
         // Find the path to apply. This currently only caters for direct fields, and fields of the candidate
         // TODO Cater for other candidate aliases from JPQL "FROM" clause
-        String firstTuple = (String)expr.getTuples().iterator().next();
+        String firstTuple = expr.getTuples().iterator().next();
         String exprPath = expr.getId();
         if (firstTuple.equals(candidateAlias))
         {
@@ -975,11 +963,11 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
             }
             else if (op == Expression.OP_EQ)
             {
-                boolExpr = Where.equal(fieldPath, (Comparable)literalValue);
+                boolExpr = Where.equal(fieldPath, literalValue);
             }
             else if (op == Expression.OP_NOTEQ)
             {
-                boolExpr = Where.not(Where.equal(fieldPath, (Comparable)literalValue));
+                boolExpr = Where.not(Where.equal(fieldPath, literalValue));
             }
         }
         else
@@ -1140,10 +1128,8 @@ public class QueryToCriteriaMapper extends AbstractExpressionEvaluator
             }
             return boolExpr;
         }
-        else
-        {
-            throw new NucleusException("Attempt to invoke " + invokeExpr.getOperation() + " on " +
+
+        throw new NucleusException("Attempt to invoke " + invokeExpr.getOperation() + " on " +
                 invokedExpr + " but this is not currently supported by NeoDatis JDOQL");
-        }
     }
 }

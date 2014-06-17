@@ -149,7 +149,7 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
     /**
      * Release of resources
      */
-    public void close()
+    public synchronized void close()
     {
         super.close();
         activeODBs.clear();
@@ -294,24 +294,22 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
             // datastore id
             return true;
         }
-        else
+
+        AbstractMemberMetaData mmd = cmd.getMetaDataForManagedMemberAtAbsolutePosition(absFieldNumber);
+        if (mmd.getValueStrategy() == null)
         {
-            AbstractMemberMetaData mmd = cmd.getMetaDataForManagedMemberAtAbsolutePosition(absFieldNumber);
-            if (mmd.getValueStrategy() == null)
-            {
-                return false;
-            }
-            else if (mmd.getValueStrategy() == IdentityStrategy.IDENTITY)
+            return false;
+        }
+        else if (mmd.getValueStrategy() == IdentityStrategy.IDENTITY)
+        {
+            throw new NucleusException("datanucleus-neodatis doesnt currently support use of application-identity and strategy \"identity\"");
+        }
+        else if (mmd.getValueStrategy() == IdentityStrategy.NATIVE)
+        {
+            String strategy = getStrategyForNative(cmd, absFieldNumber);
+            if (strategy.equalsIgnoreCase("identity"))
             {
                 throw new NucleusException("datanucleus-neodatis doesnt currently support use of application-identity and strategy \"identity\"");
-            }
-            else if (mmd.getValueStrategy() == IdentityStrategy.NATIVE)
-            {
-                String strategy = getStrategyForNative(cmd, absFieldNumber);
-                if (strategy.equalsIgnoreCase("identity"))
-                {
-                    throw new NucleusException("datanucleus-neodatis doesnt currently support use of application-identity and strategy \"identity\"");
-                }
             }
         }
 
