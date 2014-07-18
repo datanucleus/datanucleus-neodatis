@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>datanucleus-neodatis</artifactId>
-	<version>4.0.1-SNAPSHOT</version>
+	<version>4.0.1</version>
 
     <name>DataNucleus NeoDatis plugin</name>
     <description>
