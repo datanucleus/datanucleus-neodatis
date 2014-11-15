@@ -24,7 +24,8 @@ import java.util.List;
 
 import org.datanucleus.ClassLoaderResolver;
 import org.datanucleus.ExecutionContext;
-import org.datanucleus.enhancer.Persistable;
+import org.datanucleus.enhancement.Persistable;
+import org.datanucleus.enhancement.StateManager;
 import org.datanucleus.exceptions.NucleusDataStoreException;
 import org.datanucleus.exceptions.NucleusObjectNotFoundException;
 import org.datanucleus.exceptions.NucleusOptimisticException;
@@ -35,7 +36,6 @@ import org.datanucleus.metadata.IdentityType;
 import org.datanucleus.metadata.VersionMetaData;
 import org.datanucleus.metadata.VersionStrategy;
 import org.datanucleus.state.ObjectProvider;
-import org.datanucleus.state.StateManager;
 import org.datanucleus.store.AbstractPersistenceHandler;
 import org.datanucleus.store.StoreManager;
 import org.datanucleus.store.VersionHelper;
