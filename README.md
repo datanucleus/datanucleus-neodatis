@@ -3,8 +3,9 @@ datanucleus-neodatis
 
 DataNucleus support for persistence to NeoDatis datastores. See http://neodatis.org for details about this datastore.
 
-This is built using Maven, by executing `mvn clean install` which installs the built jar in your local Maven
-repository.
+__This plugin is discontinued after DataNucleus v5.0.0. If you want to take over development of it, please raise an issue registering your interest__.
+
+This is built using Maven, by executing `mvn clean install` which installs the built jar in your local Maven repository.
 
 KeyFacts
 --------
