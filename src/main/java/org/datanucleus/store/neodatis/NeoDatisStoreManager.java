@@ -389,6 +389,8 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
         set.add(StoreManager.OPTION_APPLICATION_ID);
         set.add(StoreManager.OPTION_DATASTORE_ID);
         set.add(StoreManager.OPTION_TXN_ISOLATION_READ_COMMITTED);
+        set.add(StoreManager.OPTION_QUERY_JDOQL_BULK_DELETE);
+        set.add(StoreManager.OPTION_QUERY_JPQL_BULK_DELETE);
         return set;
     }
 }
