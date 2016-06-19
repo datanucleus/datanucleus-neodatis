@@ -29,8 +29,8 @@ import org.datanucleus.ExecutionContext;
 import org.datanucleus.exceptions.NucleusException;
 import org.datanucleus.metadata.AbstractClassMetaData;
 import org.datanucleus.query.compiler.QueryCompilation;
-import org.datanucleus.query.evaluator.JPQLEvaluator;
-import org.datanucleus.query.evaluator.JavaQueryEvaluator;
+import org.datanucleus.query.inmemory.JPQLInMemoryEvaluator;
+import org.datanucleus.query.inmemory.JavaQueryInMemoryEvaluator;
 import org.datanucleus.store.StoreManager;
 import org.datanucleus.store.connection.ManagedConnection;
 import org.datanucleus.store.neodatis.NeoDatisUtils;
@@ -123,8 +123,8 @@ public class JPQLQuery extends AbstractJPQLQuery
             }
 
             // Apply any restrictions to the results (that we can't use in the input Criteria query)
-            JavaQueryEvaluator resultMapper =
-                new JPQLEvaluator(this, candidates, compilation, parameters, clr);
+            JavaQueryInMemoryEvaluator resultMapper =
+                new JPQLInMemoryEvaluator(this, candidates, compilation, parameters, clr);
             Collection results = resultMapper.execute(filterInMemory, orderingInMemory, true, true, true);
 
             if (NucleusLogger.QUERY.isDebugEnabled())

@@ -28,8 +28,8 @@ import org.datanucleus.ClassLoaderResolver;
 import org.datanucleus.ExecutionContext;
 import org.datanucleus.metadata.AbstractClassMetaData;
 import org.datanucleus.query.compiler.QueryCompilation;
-import org.datanucleus.query.evaluator.JDOQLEvaluator;
-import org.datanucleus.query.evaluator.JavaQueryEvaluator;
+import org.datanucleus.query.inmemory.JDOQLInMemoryEvaluator;
+import org.datanucleus.query.inmemory.JavaQueryInMemoryEvaluator;
 import org.datanucleus.store.StoreManager;
 import org.datanucleus.store.connection.ManagedConnection;
 import org.datanucleus.store.neodatis.NeoDatisUtils;
@@ -121,8 +121,8 @@ public class JDOQLQuery extends AbstractJDOQLQuery
             }
 
             // Apply any restrictions to the results (that we can't use in the input Criteria query)
-            JavaQueryEvaluator resultMapper =
-                new JDOQLEvaluator(this, candidates, compilation, parameters, clr);
+            JavaQueryInMemoryEvaluator resultMapper =
+                new JDOQLInMemoryEvaluator(this, candidates, compilation, parameters, clr);
             Collection results = resultMapper.execute(filterInMemory, orderingInMemory, true, true, true);
 
             if (NucleusLogger.QUERY.isDebugEnabled())
