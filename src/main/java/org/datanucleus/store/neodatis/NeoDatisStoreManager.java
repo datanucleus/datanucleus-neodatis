@@ -177,7 +177,7 @@ public class NeoDatisStoreManager extends AbstractStoreManager implements Object
         super.registerStoreData(data);
 
         // Make this class config known to all active ODB for this store
-        if (activeODBs.size() > 0)
+        if (!activeODBs.isEmpty())
         {
             Iterator containerIter = activeODBs.iterator();
             while (containerIter.hasNext())
